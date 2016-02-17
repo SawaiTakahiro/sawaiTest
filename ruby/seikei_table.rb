@@ -17,23 +17,37 @@ end
 def print_seikei_table(data)
 	column = data[0].length - 1	#配列のインデックスなので
 	
-	list_max_length = Array.new
+	list_max = Array.new
 	
-	#１カラムごとの処理
+	#カラムの要素ごとに、最大の文字数を調べる
 	for i in 0..column do
 		#そのカラムのデータを抜き出して
-		temp = data.map{|data| data[i]}
+		temp_data = data.map{|data| data[i]}
 		
 		#１番長い文字を調べる
-		list_max_length = Array.new
-		temp.each do |text|
+		temp_list_length = Array.new
+		temp_data.each do |text|
 			#文字にしないとだめ
-			list_max_length << text.to_s.each_char.map {|c| char_bytesize(c)}.inject(:+)
+			#その文字を、１文字ごとに全角か半角か調べて、合計して作業用リストに入れる
+			#ちょっと見慣れない書き方だけど…
+			temp_list_length << text.to_s.each_char.map{|c| char_bytesize(c)}.inject(:+)
 		end
 		
-		p list_max_length.max
-		
+		list_max << temp_list_length.max
 	end
+	
+	#それぞれをスペースで埋める
+	data.each do |record|
+		for i in 0..column do
+			length_max = list_max[i]
+			length_coumn = record[i].to_s.each_char.map{|c| char_bytesize(c)}.inject(:+)
+			margin = length_max - length_coumn
+			print record[i].to_s + " " * margin + " |"
+		end
+		
+		print "\n"
+	end
+	
 end
 
 data = [["a",0,"月"], ["あいうえお",10,"火曜"], ["ABCDEFGHIJK",200,"水曜日"]]
