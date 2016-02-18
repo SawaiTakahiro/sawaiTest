@@ -7,14 +7,17 @@
 =end
 
 #表形式にして返す
-
-#全角か半角かチェック
-#参考：http://cortyuming.hateblo.jp/entry/20140521/p1
-def char_bytesize(char)
-	char.bytesize == 1 ? 1 : 2
-end
-
-def print_seikei_table(data)
+def get_seikei_table(data, flag_header)
+	#flag_headerがtrueなら、１行目を見出しとして扱ってあげる
+	#true以外は無視
+	
+	#全角か半角かチェック
+	#参考：http://cortyuming.hateblo.jp/entry/20140521/p1
+	#たぶんこの中でしか使わない
+	def char_bytesize(char)
+		char.bytesize == 1 ? 1 : 2
+	end
+	
 	column = data[0].length - 1	#配列のインデックスなので
 	
 	list_max = Array.new
@@ -37,18 +40,41 @@ def print_seikei_table(data)
 	end
 	
 	#それぞれをスペースで埋める
-	data.each do |record|
+	output = ""	#出力用
+	
+	#ヘッダー、フッターを作る　※どっちも同じもの
+	deco_line = ""
+	list_max.each do |m|
+		deco = "+" + "-" * m
+		deco_line += deco
+	end
+	deco_line += "+\n"	#改行と、右端の+も足したら完成
+	
+	output += deco_line	#ヘッダー
+	
+	data.each_with_index do |record, r|
 		for i in 0..column do
 			length_max = list_max[i]
 			length_coumn = record[i].to_s.each_char.map{|c| char_bytesize(c)}.inject(:+)
 			margin = length_max - length_coumn
-			print record[i].to_s + " " * margin + " |"
+			
+			output += "|" + record[i].to_s + " " * margin
 		end
 		
-		print "\n"
+		output += "|\n"
+		
+		#１行目を見出しとして扱うときだけ
+		if r == 0 && flag_header == true then
+			output += deco_line	#ヘッダーの区切り用飾りも足す
+		end
+		
 	end
 	
+	output += deco_line	#フッター
+	
+	return output
 end
 
-data = [["a",0,"月"], ["あいうえお",10,"火曜"], ["ABCDEFGHIJK",200,"水曜日"]]
-print_seikei_table(data)
+#テスト用
+data = [["title", "購入金額", "備考"], ["a",0,"月"], ["あいうえお",10,"火曜"], ["ABCDEFGHIJK",200,"水曜日"]]
+puts get_seikei_table(data, true)
