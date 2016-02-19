@@ -12,6 +12,7 @@ def show_window(data)
 end
 
 data = Hash.new
+data.store("name", "さわい")
 data.store("HP", 100)
 data.store("MP", 100)
 data.store("Attack", 100)
@@ -20,7 +21,7 @@ data.store("Speed", 100)
 
 show_window(data)
 
-
+=begin
 #サンプル
 for i in 0..100 do
 	printf "\e[1A\e[1A\e[1A\e[1A\e[1A \r"	if i > 0# ← カーソルを上に
@@ -34,3 +35,13 @@ for i in 0..100 do
 	
 	puts text
 end
+=end
+
+window = <<"EOS"
++----------+----------+----------+
+| #{data["name"]}   | HP   #{data["HP"]} | MP   #{data["HP"]} |
++----------+----------+----------+
+EOS
+
+puts window
+
