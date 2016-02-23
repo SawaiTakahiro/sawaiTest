@@ -14,21 +14,23 @@ def add_window(data, window, pos_x, pos_y)
 	x = pos_x
 	y = pos_y
 	
+	i = 0
 	data.each_char do |char|
-		print "#{x}	#{y}	#{char}\n"
+		i += 1
+		#print "i = #{i}	#{x}	#{y}	#{char}\n"
 		
 		#改行が入っていたら、次のところに
+		#なおかつスキップしちゃう
 		if char == "\n" then
 			x = pos_x
 			y += 1
-		else
-			#window[x][y] = char
-			window[x][y] = "1"
-			x += 1
+			
+			next
 		end
+		
+		window[y][x] = char	#行の中に列が入っているから、x, yだと逆になっちゃう！
+		x += 1
 	end
-	
-	p window
 	
 	return window
 end
@@ -36,24 +38,32 @@ end
 ##################################################
 
 #画面サイズ
-WIDTH		= 10
-HEIGHT	= 10
+WIDTH		= 20
+HEIGHT	= 20
+DEFAULT_VALUE = "_"	#bashだとスペースが省かれるっぽいので、確認用としてアンダーバーにした
 
 #画面の定義
-column = Array.new(WIDTH, "0")	#初期化用に作ってる。中身も仮で0にしてるけど、今度変える
-window = Array.new(HEIGHT, column)
+#http://blog.cototoco.net/work/201405/ruby-%E9%85%8D%E5%88%97/	参考：オブジェクトIDが同じになってひどいことになる。
+window = Array.new(HEIGHT, DEFAULT_VALUE).map{Array.new(WIDTH, DEFAULT_VALUE)}
 
 
-#ためしに書き込んでみるデータ
+#以下は、ためしに書き込んでみるデータ
 hoge = <<"EOS"
 +---+
 |999|
 +---+
 EOS
 
-window = add_window(hoge, window, 2, 2)
+window[0][0] = "a"
+window[0][1] = "b"
+window[3][3] = "c"
+
+
+window = add_window(hoge, window, 0, 0)
+window = add_window(hoge, window, 4, 4)
 
 #表示してみる
 window.each do |row|
-	p row.join
+	#print row.join, "\n"
+	print row.join("."), "\n"
 end
