@@ -18,10 +18,13 @@ require "./library.rb"
 WIDTH		= 20
 HEIGHT	= 20
 DEFAULT_VALUE = "."	#bashだとスペースが省かれるっぽいので、確認用としてアンダーバーにした
+CORSOR_UP = "\e[1A"
 
 #画面の定義
 #http://blog.cototoco.net/work/201405/ruby-%E9%85%8D%E5%88%97/	参考：オブジェクトIDが同じになってひどいことになる。
 window = Array.new(HEIGHT, DEFAULT_VALUE).map{Array.new(WIDTH, DEFAULT_VALUE)}
+
+attack = 0
 
 
 #以下は、ためしに書き込んでみるデータ
@@ -33,20 +36,43 @@ EOS
 
 fuga = <<"EOS"
 +---+----+
-|atk| 255|
+|atk| #{attack}|
 +---+----+
 EOS
 
-window = add_window(hoge, window, 0, 0)
-window = add_window(fuga, window, 7, 0)
 
+#サイズの上限定義	半角で
+MAX_LEN_NAME	= 8
+MAX_LEN_STATUS	= 2
+DEFALUT_PADDING_CHAR = " "
 
-window = add_window(hoge, window, 5, 5)
-window = add_window(fuga, window, 12, 5)
+p "\n"*3
 
-#表示してみる
-window.each do |row|
-	p row.join
-	#print row.join, "\n"
-	#print row.join("."), "\n"
+for i in 0..10 do
+	attack = get_text_spaces_padding_r(i , MAX_LEN_STATUS, DEFALUT_PADDING_CHAR)
+	
+	hoge = <<"EOS"
++------+
+|さわい|
++------+
+EOS
+
+fuga = <<"EOS"
++---+----+
+|atk| #{attack}|
++---+----+
+EOS
+	window = add_window(hoge, window, 0, 0)
+	window = add_window(fuga, window, 7, 0)
+	
+	print CORSOR_UP * HEIGHT, "\r"
+	
+	#表示してみる
+	window.each do |row|
+		p row.join
+	end
+	
+	sleep 0.1
+	
 end
+
