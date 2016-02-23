@@ -10,6 +10,12 @@
 =end
 
 ##################################################
+#全角か半角かチェック
+#参考：http://cortyuming.hateblo.jp/entry/20140521/p1
+def char_bytesize(char)
+	char.bytesize == 1 ? 1 : 2
+end
+
 def add_window(data, window, pos_x, pos_y)
 	x = pos_x
 	y = pos_y
@@ -28,8 +34,14 @@ def add_window(data, window, pos_x, pos_y)
 			next
 		end
 		
+		#全角なら、２文字分って扱いにする
+		offset = 0
+		if char_bytesize(char) == 2 then
+			offset = 1
+		end
+		
 		window[y][x] = char	#行の中に列が入っているから、x, yだと逆になっちゃう！
-		x += 1
+		x += 1 + offset
 	end
 	
 	return window
@@ -49,10 +61,17 @@ window = Array.new(HEIGHT, DEFAULT_VALUE).map{Array.new(WIDTH, DEFAULT_VALUE)}
 
 #以下は、ためしに書き込んでみるデータ
 hoge = <<"EOS"
-+---+
-|999|
-+---+
++------+
+|さわい|
++------+
 EOS
+
+fuga = <<"EOS"
++---+----+
+|atk| 255|
++---+----+
+EOS
+
 
 window[0][0] = "a"
 window[0][1] = "b"
@@ -60,10 +79,15 @@ window[3][3] = "c"
 
 
 window = add_window(hoge, window, 0, 0)
-window = add_window(hoge, window, 4, 4)
+window = add_window(fuga, window, 7, 0)
+
+
+window = add_window(hoge, window, 5, 5)
+window = add_window(fuga, window, 12, 5)
 
 #表示してみる
 window.each do |row|
+	p row.join
 	#print row.join, "\n"
-	print row.join("."), "\n"
+	#print row.join("."), "\n"
 end
