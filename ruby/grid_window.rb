@@ -38,10 +38,14 @@ def add_window(data, window, pos_x, pos_y)
 		offset = 0
 		if char_bytesize(char) == 2 then
 			offset = 1
+			
+			#TODO:いい感じの順番を考える！
+			window[y][x + 1] = ""	#詰める分の中身は空にする
 		end
 		
 		window[y][x] = char	#行の中に列が入っているから、x, yだと逆になっちゃう！
 		x += 1 + offset
+		
 	end
 	
 	return window
