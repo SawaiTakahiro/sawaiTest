@@ -15,8 +15,8 @@ require "./library.rb"
 ##################################################
 
 #画面サイズ
-WIDTH		= 20
-HEIGHT	= 20
+WIDTH		= 40
+HEIGHT	= 30
 DEFAULT_VALUE = "."	#bashだとスペースが省かれるっぽいので、確認用としてアンダーバーにした
 CORSOR_UP = "\e[1A"
 
@@ -46,11 +46,12 @@ MAX_LEN_NAME	= 8
 MAX_LEN_STATUS	= 2
 DEFALUT_PADDING_CHAR = " "
 
-p "\n"*3
-
-for i in 0..10 do
+for i in 0..4 do
 	attack = get_text_spaces_padding_r(i , MAX_LEN_STATUS, DEFALUT_PADDING_CHAR)
 	
+	#TODO:ループの中に無理やりヒアドキュメント埋め込んでるの何とかする
+	#作った時点のattackが入ってしまうので、今は無理やり入れ込んでいる
+	#変数を動的に差し替えたいときは、その都度、生成しないとダメみたい。
 	hoge = <<"EOS"
 +------+
 |さわい|
@@ -65,7 +66,9 @@ EOS
 	window = add_window(hoge, window, 0, 0)
 	window = add_window(fuga, window, 7, 0)
 	
-	print CORSOR_UP * HEIGHT, "\r"
+	#TODO:ここもやりかたを何とかする
+	#まだ書き込んでないのにカーソル位置を戻していたから、ぐわーって表示されてた
+	print CORSOR_UP * HEIGHT, "\r"	if i > 0
 	
 	#表示してみる
 	window.each do |row|
@@ -73,6 +76,5 @@ EOS
 	end
 	
 	sleep 0.1
-	
 end
 
