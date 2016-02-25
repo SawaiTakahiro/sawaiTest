@@ -54,6 +54,7 @@ end
 
 ##########################################################################################
 #右詰めしたりするための処理
+#文字数のカウント
 def get_text_length(text)
 	return text.to_s.each_char.map{|c| char_bytesize(c)}.inject(:+)
 end
@@ -69,7 +70,7 @@ def get_text_spaces_padding_l(text, max_len, padding_char)
 		length = get_text_length(text)	#改めてとりなおす
 	end
 	
-	margin = max_len - length + 1
+	margin = max_len - length
 	
 	output = text.to_s
 	output += padding_char * margin if margin > 0
@@ -89,7 +90,7 @@ def get_text_spaces_padding_r(text, max_len, padding_char)
 		length = get_text_length(text)	#改めてとりなおす
 	end
 	
-	margin = max_len - length + 1
+	margin = max_len - length
 	#puts "margin	#{margin}"
 	
 	#右詰めの場合、スペースを足してから文字を入れる

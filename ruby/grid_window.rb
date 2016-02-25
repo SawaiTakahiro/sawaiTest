@@ -16,65 +16,70 @@ require "./library.rb"
 
 #画面サイズ
 WIDTH		= 40
-HEIGHT	= 30
-DEFAULT_VALUE = "."	#bashだとスペースが省かれるっぽいので、確認用としてアンダーバーにした
+HEIGHT	= 15
+DEFAULT_VALUE = " "	#bashだとスペースが省かれるっぽいので、確認用としてアンダーバーにした→windowsのだけ？
 CORSOR_UP = "\e[1A"
 
-#画面の定義
+#罫線の定義
+KEISEN_H = "-"
+KEISEN_V = "|"
+KEISEN_C = "+"
+
+#サイズの上限定義	半角でn文字
+MAX_LEN_NAME	= 8
+MAX_LEN_STATUS	= 3
+DEFALUT_PADDING_CHAR = " "
+
+
+##################################################
+#ステータス、値な表な形にして返す
+def get_seikei_status(label, value, padding_char)
+	len_label = get_text_length(label.to_s)
+	
+	#出力用のテキストにどんどん足していく
+	text_value = get_text_spaces_padding_r(value, MAX_LEN_STATUS, padding_char)	#右詰めにしておく
+	text_line = [KEISEN_C, KEISEN_H * len_label, KEISEN_C, KEISEN_H * MAX_LEN_STATUS, KEISEN_C, "\n"]	#飾り部分
+	
+	output = Array.new
+	output << text_line
+	output << [KEISEN_V, label, KEISEN_V, text_value, KEISEN_V, "\n"]
+	output << text_line
+	
+	return output.join
+end
+
+
+#画面の定義（初期化）
 #http://blog.cototoco.net/work/201405/ruby-%E9%85%8D%E5%88%97/	参考：オブジェクトIDが同じになってひどいことになる。
 window = Array.new(HEIGHT, DEFAULT_VALUE).map{Array.new(WIDTH, DEFAULT_VALUE)}
 
-attack = 0
-
 
 #以下は、ためしに書き込んでみるデータ
-hoge = <<"EOS"
+table_name = <<"EOS"
 +------+
 |さわい|
 +------+
 EOS
 
-fuga = <<"EOS"
-+---+----+
-|atk| #{attack}|
-+---+----+
-EOS
-
-
-#サイズの上限定義	半角で
-MAX_LEN_NAME	= 8
-MAX_LEN_STATUS	= 2
-DEFALUT_PADDING_CHAR = " "
-
+#メインループ
 for i in 0..4 do
-	attack = get_text_spaces_padding_r(i , MAX_LEN_STATUS, DEFALUT_PADDING_CHAR)
+	attack = i	#仮で入れてる
+	table_attack = get_seikei_status(" atk ", attack, "0")
 	
-	#TODO:ループの中に無理やりヒアドキュメント埋め込んでるの何とかする
-	#作った時点のattackが入ってしまうので、今は無理やり入れ込んでいる
-	#変数を動的に差し替えたいときは、その都度、生成しないとダメみたい。
-	hoge = <<"EOS"
-+------+
-|さわい|
-+------+
-EOS
-
-fuga = <<"EOS"
-+---+----+
-|atk| #{attack}|
-+---+----+
-EOS
-	window = add_window(hoge, window, 0, 0)
-	window = add_window(fuga, window, 7, 0)
+	#画面の内容を更新していく
+	window = add_window(table_name, window, 3, 0)
+	window = add_window(table_attack, window, 10, 0)
+	
 	
 	#TODO:ここもやりかたを何とかする
 	#まだ書き込んでないのにカーソル位置を戻していたから、ぐわーって表示されてた
+	#２回目以降だけやるようにする
 	print CORSOR_UP * HEIGHT, "\r"	if i > 0
 	
 	#表示してみる
 	window.each do |row|
 		p row.join
 	end
-	
 	sleep 0.1
 end
 
