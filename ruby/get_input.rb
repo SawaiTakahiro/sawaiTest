@@ -18,11 +18,11 @@ mode_num = 0
 COMMAND_EXIT = "exit"
 
 #存在するコマンドをまとめておく
-list_command = Hash.new
-list_command.store("exit",		MODE_END)
-list_command.store("end",		MODE_END)
-list_command.store("e",			MODE_END)
-list_command.store("quit",		MODE_END)
+LIST_COMMAND = Hash.new
+LIST_COMMAND.store("exit",		MODE_END)
+LIST_COMMAND.store("end",		MODE_END)
+LIST_COMMAND.store("e",			MODE_END)
+LIST_COMMAND.store("quit",		MODE_END)
 
 
 ##################################################
@@ -34,7 +34,8 @@ end
 #コマンドが見つからなかったら
 def command_not_found(command)
 	print CORSOR_UP
-	print "#{command.chomp} コマンドが見つかりません。\n"
+	print "#{command.chomp} コマンドが見つかりません。正しいコマンドを入力してください。\n"
+	print "存在するコマンド：#{LIST_COMMAND.keys.join(", ")}\n"
 end
 
 
@@ -42,7 +43,7 @@ end
 print "コマンドを入力してください。\n"
 while command = STDIN.gets
 	#入力されたコマンドのチェック
-	result_command = list_command[command.chomp]
+	result_command = LIST_COMMAND[command.chomp]
 	
 	#nilじゃなければモードの変更をする
 	unless result_command == nil then
