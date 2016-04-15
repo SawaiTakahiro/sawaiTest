@@ -1,0 +1,74 @@
+# twitterの覚書
+## tweet
+### attrs
+- ハッシュ
+- :created_at
+- :id
+- :id_str
+- :text
+- :entities
+    - :hashtags
+    - :symbols
+    - :user_mentions
+    - :urls
+    - :expanded_url
+    - :display_url
+    - :indices
+- :truncated
+- :source
+- :in_reply_to_status_id
+- :in_reply_to_status_id_str
+- :in_reply_to_user_id
+- :in_reply_to_user_id_str
+- :in_reply_to_screen_name
+- :user
+- :id_str
+- :name
+- :screen_name
+- :location
+- :description
+- :url
+- :entities
+- :protected
+- :followers_count
+- :friends_count
+- :listed_count
+- :created_at
+- :favourites_count
+- :utc_offset
+- :time_zone
+- :geo_enabled
+- :verified
+- :statuses_count
+- :lang
+- :contributors_enabled
+- :is_translator
+- :is_translation_enabled
+- :profile_background_color
+- :profile_background_image_url
+- :profile_background_image_url_https
+- :profile_background_tile
+- :profile_image_url
+- :profile_image_url_https
+- :profile_link_color
+- :profile_sidebar_border_color
+- :profile_sidebar_fill_color
+- :profile_text_color
+- :profile_use_background_image
+- :has_extended_profile
+- :default_profile
+- :default_profile_image
+- :following
+- :follow_request_sent
+- :notifications
+- :geo
+- :coordinates
+- :place
+- :contributors
+- :is_quote_status
+- :retweet_count
+- :favorite_count
+- :favorited
+- :retweeted
+- :possibly_sensitive
+- :lang
