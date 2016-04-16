@@ -42,7 +42,7 @@ print "処理の開始をします。\n"
 db = SQLite3::Database.new("./arcive.db")	#ファイルなかったら作られるから平気
 
 #カード作る用のデータを取得
-MAX_COUNT = 300
+MAX_COUNT = 100	#100で十分かも。多すぎると捌くのだるい&重くなる
 query = "select * from arcive where flag = 'false' limit #{MAX_COUNT};"
 list_tweet = db.execute(query)
 length_list = list_tweet.length

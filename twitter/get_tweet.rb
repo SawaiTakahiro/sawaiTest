@@ -56,7 +56,7 @@ end
 #ここから実際の処理
 MAX_COUNT = 200
 page_num = 1
-max_page = 20
+max_page = 2
 
 data = Array.new
 for i in page_num..max_page do
