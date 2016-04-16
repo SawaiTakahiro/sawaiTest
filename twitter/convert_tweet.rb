@@ -15,7 +15,7 @@ require "./library.rb"
 require "sqlite3"
 include SQLite3
 
-TABLE_NAME = "fuga"
+TABLE_NAME = "arcive"
 
 #つぶやきを、見出しとアドレスに分けられたら分ける
 def text_split(text)
@@ -38,7 +38,7 @@ end
 list_tweet = read_csv("./output.csv")
 
 db = SQLite3::Database.new("./arcive.db")	#ファイルなかったら作られるから平気
-db.execute("create table if not exists #{TABLE_NAME}(id primary key, date, title, address);")	#初期化用テーブル
+db.execute("create table if not exists #{TABLE_NAME}(id primary key, date, title, address, flag);")	#初期化用クエリ
 
 db.transaction do
 	list_tweet.each do |tweet|
@@ -51,7 +51,7 @@ db.transaction do
 		#なんかブログ名とかで'とか`とか使われていると取り込めないので注意。とりあえず適当な文字に置き換えている
 		address = data[1]
 		
-		query = "insert or ignore into #{TABLE_NAME} values('#{id}', '#{date}', '#{title}', '#{address}')"
+		query = "insert or ignore into #{TABLE_NAME} values('#{id}', '#{date}', '#{title}', '#{address}', 'false')"
 		db.execute(query)
 	end
 end
