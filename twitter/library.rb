@@ -13,8 +13,8 @@ require "json"
 
 ##########################################################################################
 #CSVファイルを読み込んで、配列で返すやつ
-def test()
-	puts "test"
+def read_csv(path)
+	return CSV.read(path)
 end
 
 #配列をCSVで保存する
