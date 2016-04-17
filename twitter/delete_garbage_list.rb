@@ -45,3 +45,8 @@ my_list = Trello.client.find(:list, ENV["TRELLO_GARBAGE_ID"])
 my_list.cards.each do |card|
 	card.delete
 end
+
+my_list = Trello.client.find(:list, ENV["TRELLO_GARBAGE_ID2"])
+my_list.cards.each do |card|
+	card.delete
+end
